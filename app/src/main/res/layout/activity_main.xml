@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:background="#999"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#999"
     tools:context="songkun.com.simplelinechart.MainActivity">
 
-    <songkun.com.simplelinechart.SimpleLineChart
-        android:id="@+id/slc"
-        android:background="#fff"
-        android:layout_gravity="center"
+    <!--走势图-->
+    <com.ugoutech.linechart.view.LineChartView
+        android:id="@+id/chart"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="160dp"
+        android:layout_margin="20dp"
+        android:background="@color/white"/>
+
 
 </LinearLayout>
