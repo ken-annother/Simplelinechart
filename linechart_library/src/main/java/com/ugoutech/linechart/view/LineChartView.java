@@ -6,10 +6,11 @@ import android.graphics.Color;
 import android.graphics.CornerPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.ViewGroup;
+import android.view.View;
 
 import com.ugoutech.linechart.holder.Axix;
 import com.ugoutech.linechart.holder.PointValue;
@@ -29,7 +30,7 @@ import java.util.List;
  * @创建时间: 2016/4/29 13:16
  */
 
-public class LineChartView extends ViewGroup {
+public class LineChartView extends View {
 
     private static final String TAG = "LineChartView";
 
@@ -104,15 +105,6 @@ public class LineChartView extends ViewGroup {
     public LineChartView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
-    }
-
-
-    @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-
-        for (int i = 0; i < getChildCount(); i++) {
-            getChildAt(i).layout(left, top, right, bottom);
-        }
     }
 
 
@@ -373,14 +365,15 @@ public class LineChartView extends ViewGroup {
     private void handleHintEffect(int index) {
 
         if (index >= 0) {
-//            TestUtils.showToast(mContext, "Index : " + index + "被击中了");
             mMarkView.setLabel(mDataSets.get(index).getyValue() + "");
+
             determineMarkViewPos(index);
             mCanDraw = true;
 
         } else {
             mCanDraw = false;
         }
+
 
         invalidate();
 
@@ -404,7 +397,7 @@ public class LineChartView extends ViewGroup {
         float[] priv = mAxix.calcPriv(index, mDataSets.get(index).getyValue());
 
         if (priv[1] - height >= 0) {
-            mMarkView.setShowDownShape(true);
+            mMarkView.setDirection(MarkView.UP);
             mMarkView.refreshContent();
 
             mMarkViewPosX = priv[0] - width / 2;
@@ -412,7 +405,7 @@ public class LineChartView extends ViewGroup {
 
         } else {        //标记超出了上线，则应该将标记调转方向
 
-            mMarkView.setShowDownShape(false);
+            mMarkView.setDirection(MarkView.DOWN);
             mMarkView.refreshContent();
 
             mMarkViewPosX = priv[0] - width / 2;

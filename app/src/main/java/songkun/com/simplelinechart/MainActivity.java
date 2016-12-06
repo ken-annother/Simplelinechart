@@ -2,6 +2,7 @@ package songkun.com.simplelinechart;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.ugoutech.linechart.holder.PointValue;
 import com.ugoutech.linechart.view.LineChartView;
@@ -39,8 +40,11 @@ public class MainActivity extends AppCompatActivity {
 
         for (int i = 0; i < dayNum; i++) {
             MemberDayIncomeWeekCount.DataBean.CountsBean bean = new MemberDayIncomeWeekCount.DataBean.CountsBean();
-            bean.amount = dayNum;
-            bean.date = "11-" + (dayNum + 1);
+            bean.amount = (int)(Math.random() * 100) % 100;
+//            bean.amount = 0;
+            Log.d("amount", (Math.random() * 100) % 300 + "");
+            bean.date = "11-" + (i + 1);
+            data.counts.add(bean);
         }
 
     }
