@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
         mChart.setData(values);
 
+        mChart.animateY(1000);
     }
 
 }

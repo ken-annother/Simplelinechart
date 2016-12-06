@@ -1,5 +1,7 @@
 package com.ugoutech.linechart.view;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -88,6 +90,10 @@ public class LineChartView extends View {
     private float mMarkViewPosX;
     //标记的Y位置
     private float mMarkViewPosY;
+
+
+    //当前Y轴的点
+    private float mPhaseY;
 
 
     public LineChartView(Context context) {
@@ -188,7 +194,7 @@ public class LineChartView extends View {
     private void drawDots() {
         int datasetSize = mDataSets.size();
         for (int i = 0; i < datasetSize; i++) {
-            float[] priv = mAxix.calcPriv(i, mDataSets.get(i).getyValue());
+            float[] priv = mAxix.calcPriv(i, mDataSets.get(i).getyValue() * mPhaseY);
 
             //画出了白色空隙数据点
             mCanvas.drawCircle(priv[0], priv[1], 15, dotPaintWhite);
@@ -210,7 +216,7 @@ public class LineChartView extends View {
         path.reset();
 
         for (int i = 0; i < datasetSize; i++) {
-            float[] priv = mAxix.calcPriv(i, mDataSets.get(i).getyValue());
+            float[] priv = mAxix.calcPriv(i, mDataSets.get(i).getyValue() * mPhaseY);
 
             //画出了垂线
             mCanvas.drawLine(priv[0], priv[1], priv[0], mAxix.getOrgPriv()[1], axixPaint);
@@ -223,7 +229,6 @@ public class LineChartView extends View {
         }
 
         mCanvas.drawPath(path, linePaint);
-
 
     }
 
@@ -454,6 +459,34 @@ public class LineChartView extends View {
      */
     public void setMarkView(MarkView markView) {
         mMarkView = markView;
+    }
+
+
+    /**
+     * 创造一种山谷上升的效果
+     *
+     * @param durationMillis
+     */
+    public void animateY(int durationMillis) {
+        ObjectAnimator animatorX = ObjectAnimator.ofFloat(this, "phaseY", 0f, 1f);
+        animatorX.setDuration(durationMillis);
+        animatorX.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                postInvalidate();
+            }
+        });
+        animatorX.start();
+    }
+
+
+    private float getPhaseY() {
+        return mPhaseY;
+    }
+
+
+    private void setPhaseY(float phaseY) {
+        mPhaseY = phaseY;
     }
 }
 
